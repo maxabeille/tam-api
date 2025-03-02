@@ -1,10 +1,12 @@
 import express from "express";
 import { nextTram } from "../responseActions/nextTram.js";
 import { nextTrams } from "../responseActions/nextTrams.js";
+import { nextTramsToDirection } from "../responseActions/nextTramsToDirection.js";
 
 const ACTIONS = {
   nextTram: nextTram,
-  nextTrams : nextTrams
+  nextTrams : nextTrams,
+  nextTramsToDirection: nextTramsToDirection
 }
 
 const getResponse = text => ({
