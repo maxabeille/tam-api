@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "swagger": "node swagger.js"
+    "swagger": "node swagger.js",
+    "lines": "node src/script/lines.js"
   },
   "keywords": [],
   "author": "",

@@ -18,7 +18,7 @@ fetch('https://www.tam-voyages.com/horaires_ligne/index.asp?rub_code=6&laction=m
       type: img.getAttribute('src').includes('TRAM') ? 'tram' : 'bus',
       id: +link.getAttribute('href').match(/lign_id=\d{1,2}/g)[0].split('=')[1],
       number: +img.getAttribute('alt'),
-      sens: +link.getAttribute('href').match(/sens=\d/g)[0].split(' ')[0].split('=')[1]
+      direction: +link.getAttribute('href').match(/sens=\d/g)[0].split(' ')[0].split('=')[1]
     }
   })
 
