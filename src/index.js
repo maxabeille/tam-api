@@ -13,6 +13,10 @@ app.use('/stop', stopRouter)
 app.use('/line', lineRouter)
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
+app.get('/', (req, res) => {
+    res.redirect('/doc')
+})
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 })

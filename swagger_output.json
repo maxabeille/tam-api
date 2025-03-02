@@ -5,7 +5,7 @@
     "description": "API for the TAM Montpellier public transport system",
     "version": "1.0.0"
   },
-  "host": "https://tam.alexis-mateo.fr",
+  "host": "tam.alexis-mateo.fr",
   "basePath": "/",
   "tags": [
     {
