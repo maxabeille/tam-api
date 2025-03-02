@@ -8,7 +8,7 @@ const ACTIONS = {
 }
 
 const getResponse = text => ({
-  fulfillment_response: {
+  fulfillmentResponse: {
     messages: [
       {
         text: {
@@ -16,12 +16,13 @@ const getResponse = text => ({
         }
       }
     ]
-  } 
+  },
+  mergeBehavior: "REPLACE"
 })
 
 export const webhookRouter = new express.Router();
 webhookRouter.post('/', async (req, res) => {
-  const action = req.body.fulfillment_info.tag;
+  const action = req?.body?.fulfillmentInfo?.tag;
     try {
         if (action in ACTIONS) {
             const text = ACTIONS[action](req, res);
