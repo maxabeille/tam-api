@@ -24,7 +24,7 @@ webhookRouter.post('/', async (req, res) => {
   const action = req?.body?.fulfillmentInfo?.tag;
     try {
         if (action in ACTIONS) {
-            const text = ACTIONS[action](req, res);
+            const text = await ACTIONS[action](req, res);
             return res.json(getResponse(text));
         } else {
             return res.json(getResponse("Je ne peux pas répondre à cette action."));
