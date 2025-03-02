@@ -1,11 +1,12 @@
 import express from "express";
-import { nextTram } from "../responseActions/nextTram";
+import { nextTram } from "../responseActions/nextTram.js";
+import { nextTrams } from "../responseActions/nextTrams.js";
 
 export const webhookRouter = new express.Router();
 
 const ACTIONS = {
   nextTram: nextTram,
-  nextTrams : nextTram
+  nextTrams : nextTrams
 }
 
 webhookRouter.post('/', async (req, res) => {
