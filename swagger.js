@@ -7,7 +7,10 @@ const options = {
     title: 'TAM Rest API',
     description: 'API for the TAM Montpellier public transport system'
   },
-  host: 'tam.alexis-mateo.fr',
+  host: 'https://tam.alexis-mateo.fr',
+  "schemes": [
+    "https"
+  ],
   tags: [
     {
       name: 'Stop',

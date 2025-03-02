@@ -5,7 +5,7 @@
     "description": "API for the TAM Montpellier public transport system",
     "version": "1.0.0"
   },
-  "host": "tam.alexis-mateo.fr",
+  "host": "https://tam.alexis-mateo.fr",
   "basePath": "/",
   "tags": [
     {
@@ -18,7 +18,7 @@
     }
   ],
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/stop/next/{station}": {
@@ -88,9 +88,19 @@
           "Line"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
