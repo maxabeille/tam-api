@@ -1,5 +1,5 @@
 export const nextTramsToDirection = async (req, res) => {
-  const destination = req?.body?.fulfillmentInfo?.parameters?.destination;
+  const destination = req?.body?.fulfillmentInfo?.parameters?.destination[0]?.original;
   if (!destination) {
     return 'Je ne peux pas récupérer la destination.';
   }
