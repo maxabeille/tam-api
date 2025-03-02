@@ -21,7 +21,7 @@ const getResponse = text => ({
 
 export const webhookRouter = new express.Router();
 webhookRouter.post('/', async (req, res) => {
-  const action = req.body.fullFilmentInfo.tag;
+  const action = req.body.fulfillment_info.tag;
     try {
         if (action in ACTIONS) {
             const text = ACTIONS[action](req, res);
