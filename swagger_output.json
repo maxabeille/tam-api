@@ -1,0 +1,99 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "TAM Rest API",
+    "description": "API for the TAM Montpellier public transport system",
+    "version": "1.0.0"
+  },
+  "host": "tam.alexis-mateo.fr",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Stop",
+      "description": "Operations about stops"
+    },
+    {
+      "name": "Line",
+      "description": "Operations about lines"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/stop/next/{station}": {
+      "get": {
+        "tags": [
+          "Stop"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "station",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "line",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/line/{line}/{dir}": {
+      "get": {
+        "tags": [
+          "Line"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "line",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dir",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/line/": {
+      "get": {
+        "tags": [
+          "Line"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}
