@@ -9,7 +9,7 @@ webhookRouter.post('/', async (req, res) => {
     // }
 
     try {
-        const response = await fetch(`localhost:3000/stop/next/${encodeURIComponent('pl. de l\'europe')}?line=1&destination=mosson`);
+        const response = await fetch(`https://tam.alexis-mateo.fr/webhook/stop/next/${encodeURIComponent('pl. de l\'europe')}?line=1&destination=mosson`);
         const data = await response.json();
         const nextTram = data[0].duration;
         res.json({ fulfillmentText: `Le prochain tram arrive dans toto minutes.` });
