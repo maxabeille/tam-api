@@ -8,7 +8,7 @@ const ACTIONS = {
 }
 
 const getResponse = text => ({
-  fulfillmentResponse: {
+  fulfillment_response: {
     messages: [
       {
         text: {
@@ -17,7 +17,6 @@ const getResponse = text => ({
       }
     ]
   },
-  mergeBehavior: "REPLACE"
 })
 
 export const webhookRouter = new express.Router();
