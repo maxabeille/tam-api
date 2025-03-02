@@ -7,17 +7,30 @@ const ACTIONS = {
   nextTrams : nextTrams
 }
 
+const getResponse = text => ({
+  fulfillment_response: {
+    messages: [
+      {
+        text: {
+          text: [text]
+        }
+      }
+    ]
+  } 
+})
+
 export const webhookRouter = new express.Router();
 webhookRouter.post('/', async (req, res) => {
-  const action = req.body.queryResult?.action
+  const action = req.body.fullFilmentInfo.tag;
     try {
         if (action in ACTIONS) {
-            return ACTIONS[action](req, res);
+            const text = ACTIONS[action](req, res);
+            return res.json(getResponse(text));
         } else {
-            return res.json({ fulfillmentText: "Je ne peux pas répondre à cette action." });
+            return res.json(getResponse("Je ne peux pas répondre à cette action."));
         }
     } catch (error) {
         console.error(error);
-        res.json({ fulfillmentText: "Je ne peux pas récupérer les horaires pour le moment." });
+        res.json(getResponse("Je ne peux pas récupérer les horaires pour le moment."));
     }
 });
