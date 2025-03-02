@@ -1,5 +1,6 @@
 export const nextTramsToDirection = async (req, res) => {
-  const direction = req?.body?.fulfillmentInfo?.parameters?.direction[0]?.original;
+  const direction = req?.body?.fulfillmentInfo?.parameters?.direction[0]?.original
+  con,sole.log(req?.body?.fulfillmentInfo?.parameters);
   if (!direction) {
     return 'Je ne peux pas récupérer la destination.';
   }
