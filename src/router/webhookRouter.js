@@ -15,6 +15,7 @@ webhookRouter.post('/', async (req, res) => {
         res.json({ fulfillmentText: `Le prochain tram arrive dans toto minutes.` });
         // res.json({ fulfillmentText: `Le prochain tram arrive dans ${nextTram} minutes.` });
     } catch (error) {
+        console.error(error);
         res.json({ fulfillmentText: "Je ne peux pas récupérer les horaires pour le moment." });
     }
 });
