@@ -8,9 +8,27 @@ const getStop = (stop) => ({
   name: stop.Name,
   lat: stop.Latitude,
   lon: stop.Longitude,
+  logicalId: stop.LogicalStop.Id
 })
 
 const BASE = "https://www.tam-voyages.com/WebServices/TransinfoService/api/MAP/v2/GetLineStops/json?key=TAM&Lang=FR"
+
+export const getLineData = async (lineId, lineNumber, direction) => {
+  const data = await (await fetch(`${BASE}&Line=${lineId}&Direction=${direction}`)).json()
+
+  const line = {
+    id: lineId,
+    number: lineNumber,
+    name: data.Data[0].LineList[0].Name,
+    bounds: {
+      first: getStop(data.Data[0]),
+      last: getStop(data.Data[data.Data.length - 1])
+    },
+    stops: data.Data.map(getStop)
+  }
+  return line
+}
+
 lineRouter.get('/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Line']
   // #swagger.summary = 'Get line informations like stops, bounds, etc.'
@@ -25,19 +43,8 @@ lineRouter.get('/:line/:direction', async (req, res) => {
     return
   }
 
-  const data = await (await fetch(`${BASE}&Line=${lineId}&Direction=${req.params.direction}`)).json()
-
-  const line = {
-    id: lineId,
-    number: +req.params.line,
-    name: data.Data[0].LineList[0].Name,
-    bounds: {
-      first: getStop(data.Data[0]),
-      last: getStop(data.Data[data.Data.length - 1])
-    },
-    stops: data.Data.map(getStop)
-  }
-  res.json(line)
+  const data = await getLineData(lineId, req.params.line, req.params.direction)
+  res.json(data)
 });
 
 lineRouter.get('/', async (req, res) => {

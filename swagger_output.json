@@ -53,6 +53,46 @@
         }
       }
     },
+    "/stop/schedule/{station}/{line}/{direction}": {
+      "get": {
+        "tags": [
+          "Stop"
+        ],
+        "summary": "Get the schedule of a station for a line and a direction.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "station",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "line",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/line/{line}/{direction}": {
       "get": {
         "tags": [
