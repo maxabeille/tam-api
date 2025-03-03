@@ -23,6 +23,7 @@ const getResponse = text => ({
 
 export const webhookRouter = new express.Router();
 webhookRouter.post('/', async (req, res) => {
+   // #swagger.ignore = true
   const action = req?.body?.fulfillmentInfo?.tag;
     try {
         if (action in ACTIONS) {

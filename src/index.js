@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { stopRouter } from './router/stopRouter.js';
-import {lineRouter} from "./router/lineRouter.js";
-import {webhookRouter} from "./router/webhookRouter.js";
+import { lineRouter } from "./router/lineRouter.js";
+import { webhookRouter } from "./router/webhookRouter.js";
 import swaggerUi from 'swagger-ui-express'
 import swaggerFile from '../swagger_output.json' with { type: "json" };
 
@@ -16,6 +16,7 @@ app.use('/webhook', webhookRouter)
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.get('/', (req, res) => {
+     // #swagger.ignore = true
     res.redirect('/doc')
 })
 

@@ -11,22 +11,25 @@ const getStop = (stop) => ({
 })
 
 const BASE = "https://www.tam-voyages.com/WebServices/TransinfoService/api/MAP/v2/GetLineStops/json?key=TAM&Lang=FR"
-lineRouter.get('/:line/:dir', async (req, res) => {
+lineRouter.get('/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Line']
-  if (!lineMappings[req.params.line]) {
+  // #swagger.summary = 'Get line informations like stops, bounds, etc.'
+  const lineId = lineMappings.find(x => x.number === +req.params.line)?.id
+  if (!lineId) {
     res.status(404).json({error: 'Line not found'})
     return
   }
 
-  if (!['1', '2'].includes(req.params.dir)) {
+  if (!['1', '2'].includes(req.params.direction)) {
     res.status(404).json({error: 'Direction not found'})
     return
   }
 
-  const data = await (await fetch(`${BASE}&Line=${lineMappings[req.params.line]}&Direction=${req.params.dir}`)).json()
+  const data = await (await fetch(`${BASE}&Line=${lineId}&Direction=${req.params.direction}`)).json()
 
   const line = {
-    id: lineMappings[req.params.line],
+    id: lineId,
+    number: +req.params.line,
     name: data.Data[0].LineList[0].Name,
     bounds: {
       first: getStop(data.Data[0]),
@@ -39,6 +42,7 @@ lineRouter.get('/:line/:dir', async (req, res) => {
 
 lineRouter.get('/', async (req, res) => {
   // #swagger.tags = ['Line']
+  // #swagger.summary = 'Get all lines'
   if (req.query.type && !['tram', 'bus'].includes(req.query.type)) {
     return res.status(404).json({error: 'Type not found'})
   }

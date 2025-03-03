@@ -7,6 +7,7 @@ const TAM_DATA_ENDPOINT = "http://data.montpellier3m.fr/sites/default/files/ress
 
 stopRouter.get('/next/:station', async (req, res) => {
   // #swagger.tags = ['Stop']
+  // #swagger.summary = 'Get next trams at a station. You can filter by line and destination.'
   const tamCSV = await (await fetch(TAM_DATA_ENDPOINT)).text()
   const records = parse(tamCSV, {
     columns: true,

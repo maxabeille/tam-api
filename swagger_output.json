@@ -21,21 +21,12 @@
     "https"
   ],
   "paths": {
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/stop/next/{station}": {
       "get": {
         "tags": [
           "Stop"
         ],
+        "summary": "Get next trams at a station. You can filter by line and destination.",
         "description": "",
         "parameters": [
           {
@@ -62,11 +53,12 @@
         }
       }
     },
-    "/line/{line}/{dir}": {
+    "/line/{line}/{direction}": {
       "get": {
         "tags": [
           "Line"
         ],
+        "summary": "Get line informations like stops, bounds, etc.",
         "description": "",
         "parameters": [
           {
@@ -76,7 +68,7 @@
             "type": "string"
           },
           {
-            "name": "dir",
+            "name": "direction",
             "in": "path",
             "required": true,
             "type": "string"
@@ -97,6 +89,7 @@
         "tags": [
           "Line"
         ],
+        "summary": "Get all lines",
         "description": "",
         "parameters": [
           {
@@ -111,16 +104,6 @@
           },
           "404": {
             "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/webhook/": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
