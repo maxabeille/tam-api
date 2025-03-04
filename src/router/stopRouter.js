@@ -47,9 +47,9 @@ stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
     return res.status(400).json({error: 'Missing parameters'})
   }
 
-  const lineId = lineMappings.find(x => x.number === +req.params.line)?.id
-  const lineData = await getLineData(lineId, req.params.line, req.params.direction)  
-  const stopId = lineData.stops.find(stop => stop.name.toLowerCase() === req.params.station.toLowerCase())?.id
+  const lineId = lineMappings.find(x => +x.numero === +req.params.line)?.id
+  const lineData = await getLineData(req.params.line, req.params.direction)  
+  const stopId = lineData.stops.find(stop => stop.nom.toLowerCase() === req.params.station.toLowerCase())?.id
   if (!stopId) {
     return res.status(404).json({error: 'Stop not found'})
   }
@@ -73,11 +73,11 @@ stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
             }
         });
         schedule[hour] = minutes;
-    });
+      });
       res.json({
         station: req.params.station,
         line: req.params.line,
-        destination: lineData.bounds.last,
+        destination: lineData.ligne_param[['nom_aller', 'nom_retour'][(+req.params.direction) - 1]],
         schedule
       })
     })
