@@ -5,11 +5,13 @@ import { parseTime } from "../utils/time.js";
 import { getLineData } from "./lineRouter.js";
 import { writeFileSync } from 'fs';
 import lineMappings from "../data/lineMappings.json" with { type: "json" };
+import {getResearch} from "../helper/searchHelper.js";
+import {deepToArray, flattenStops} from "../helper/stopHelper.js";
 
 export const stopRouter = new express.Router();
 const TAM_DATA_ENDPOINT = "http://data.montpellier3m.fr/sites/default/files/ressources/TAM_MMM_TpsReel.csv"
 
-stopRouter.get('/next/:station', async (req, res) => {
+stopRouter.get('/next/old/:station', async (req, res) => {
   // #swagger.tags = ['Stop']
   // #swagger.summary = 'Get next trams at a station. You can filter by line and destination.'
   const tamCSV = await (await fetch(TAM_DATA_ENDPOINT)).text()
@@ -38,11 +40,11 @@ stopRouter.get('/next/:station', async (req, res) => {
   })));
 });
 
-const baseURL = 'https://www.tam-voyages.com/horaires_arret/?rub_code=28'
 stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Stop']
   // #swagger.summary = 'Get the schedule of a station for a line and a direction.'
 
+  const baseURL = 'https://www.tam-voyages.com/horaires_arret/?rub_code=28'
   if(!req.params.station || !req.params.direction || !req.params.line) {
     return res.status(400).json({error: 'Missing parameters'})
   }
@@ -88,3 +90,25 @@ stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
     })
 
 })
+
+stopRouter.get('/next/:station', async (req, res) => {
+  // #swagger.tags = ['Stop']
+  // #swagger.summary = 'Get next trams at a station. You can filter by line and destination.'
+  const regex = /S+\d*/g
+
+  let id = req.params.station
+  if (!id.match(regex)) {
+    const search = await getResearch(id)
+    if (search.length) {
+      id = search[0].Id
+    }
+  }
+
+  if (String(id).charAt(0) !== 'S') {
+    id = 'S' + id
+  }
+
+  const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stop/rt/${id}`);
+  const data = await response.json();
+  res.json(flattenStops(data));
+});
