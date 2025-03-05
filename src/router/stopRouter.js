@@ -109,6 +109,15 @@ stopRouter.get('/next/:station', async (req, res) => {
   }
 
   const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stop/rt/${id}`);
-  const data = await response.json();
-  res.json(flattenStops(data));
+  let data = flattenStops(await response.json());
+
+  if (req.query.line) {
+    data = data.filter(tram => tram.ligne === req.query.line);
+  }
+
+  if (req.query.destination) {
+    data = data.filter(tram => tram.trip_headsign === req.query.destination.toUpperCase());
+  }
+
+  res.json(data);
 });
