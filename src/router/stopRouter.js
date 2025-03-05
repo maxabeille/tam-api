@@ -60,6 +60,10 @@ stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
     }).then(text => {
       const root = htmlParse(text)
       const table = root.getElementById('stophour')
+      if(!table) {
+        return res.status(404).json({error: 'Schedule not found at this url : ' + `${baseURL}&lign_id=${lineId}&sens=${req.params.direction}&laDate=${encodeURIComponent(new Date().toLocaleDateString())}&pa_id=${stopId}`})
+      }
+
       const schedule = {};
 
       const hourCells = table.querySelectorAll('td.hour');
