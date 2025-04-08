@@ -1,5 +1,7 @@
 import express from "express";
 import lineMappings from "../data/lineMappings.json" with { type: "json" };
+import busGeo from "../data/MMM_MMM_BusLigne.json" with { type: "json" };
+import tramGeo from "../data/MMM_MMM_LigneTram.json" with { type: "json" };
 
 export const lineRouter = express.Router()
 
@@ -17,6 +19,17 @@ export const getLineData = async (lineNumber, direction) => {
   const data = await (await fetch(`https://cartographie.tam-voyages.com/gtfs/ligne/${lineNumber}/ordered-arrets/${direction - 1}`)).json()
   return { ...data, stops: Object.values(data.stops) }
 }
+
+lineRouter.get('/geojson/:line/:direction', async (req, res) => {
+  const mapping = [
+      "ALLER",
+      "RETOUR"
+  ]
+
+  res.json({
+    noms: tramGeo.features.map(f => ({num: f.properties.num_exploitation, nom: f.properties.nom_ligne, sens: f.properties.sens})),
+  })
+})
 
 lineRouter.get('/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Line']
