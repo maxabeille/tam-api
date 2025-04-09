@@ -21,14 +21,20 @@ export const getLineData = async (lineNumber, direction) => {
 }
 
 lineRouter.get('/geojson/:line/:direction', async (req, res) => {
-  const mapping = [
-      "ALLER",
-      "RETOUR"
-  ]
-
-  res.json({
-    noms: tramGeo.features.map(f => ({num: f.properties.num_exploitation, nom: f.properties.nom_ligne, sens: f.properties.sens})),
-  })
+  const mapping = ["Aller", "Retour"]
+  let geoJson = []
+  if (['1', '2'].includes(req.params.direction)) {
+    geoJson = busGeo.features.find(x =>
+        x.properties.num_exploitation === +req.params.line
+        && x.properties.sens === mapping[req.params.direction - 1]
+    )
+  } else {
+    geoJson = tramGeo.features.find(x =>
+        x.properties.num_exploitation === +req.params.line
+        && x.properties.nom_ligne.endsWith(req.params.direction)
+    )
+  }
+  res.json(geoJson || [])
 })
 
 lineRouter.get('/:line/:direction', async (req, res) => {
