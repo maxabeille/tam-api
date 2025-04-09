@@ -21,6 +21,9 @@ export const getLineData = async (lineNumber, direction) => {
 }
 
 lineRouter.get('/geojson/:line/:direction', async (req, res) => {
+  // #swagger.tags = ['Line']
+  // #swagger.summary = 'Get GeoJSON of a line'
+
   const mapping = ["Aller", "Retour"]
   let geoJson = []
   if (['1', '2'].includes(req.params.direction)) {

@@ -125,6 +125,34 @@
         }
       }
     },
+    "/line/geojson/{line}/{direction}": {
+      "get": {
+        "tags": [
+          "Line"
+        ],
+        "summary": "Get GeoJSON of a line",
+        "description": "",
+        "parameters": [
+          {
+            "name": "line",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/line/{line}/{direction}": {
       "get": {
         "tags": [
