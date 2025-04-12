@@ -9,36 +9,6 @@ import {getResearch} from "../helper/searchHelper.js";
 import {deepToArray, flattenStops} from "../helper/stopHelper.js";
 
 export const stopRouter = new express.Router();
-const TAM_DATA_ENDPOINT = "http://data.montpellier3m.fr/sites/default/files/ressources/TAM_MMM_TpsReel.csv"
-
-stopRouter.get('/next/old/:station', async (req, res) => {
-  // #swagger.tags = ['Stop']
-  // #swagger.summary = 'Get next trams at a station. You can filter by line and destination.'
-  const tamCSV = await (await fetch(TAM_DATA_ENDPOINT)).text()
-  const records = parse(tamCSV, {
-    columns: true,
-    skip_empty_lines: true,
-    delimiter: ';',
-  })
-
-  let data = records.filter(record => record.stop_name === req.params.station.toUpperCase());
-
-  if (req.query.line) {
-    data = data.filter(record => record.route_short_name === req.query.line);
-  }
-
-  if (req.query.destination) {
-    data = data.filter(record => record.trip_headsign === req.query.destination.toUpperCase());
-  }
-  res.json(data.map(data => ({
-    line: data.route_short_name,
-    stop: data.stop_name,
-    destination: data.trip_headsign,
-    time: data.departure_time,
-    duration: parseTime(data.departure_time),
-    isTheorical: Boolean(+data.is_theorical),
-  })));
-});
 
 stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Stop']
@@ -100,7 +70,12 @@ stopRouter.get('/next/:station', async (req, res) => {
   if (!id.match(regex)) {
     const search = await getResearch(id)
     if (search.length) {
-      id = search[0].Id
+      const exactMatch = search.find(stop => stop.Name.toLowerCase() === id.toLowerCase())
+      if(exactMatch) {
+        id = exactMatch.Id
+      } else {
+        id = search[0].Id
+      }
     }
   }
 
@@ -125,3 +100,34 @@ stopRouter.get('/next/:station', async (req, res) => {
 
   res.json(data);
 });
+
+stopRouter.get('/:station/related', async (req, res) => {
+  // #swagger.tags = ['Stop']
+  // #swagger.summary = 'Get related line to a station.'
+
+  const regex = /S+\d*/g
+
+  let id = req.params.station
+  if (!id.match(regex)) {
+    const search = await getResearch(id)
+    if (search.length) {
+      const exactMatch = search.find(stop => stop.Name.toLowerCase() === id.toLowerCase())
+      if(exactMatch) {
+        id = exactMatch.Id
+      } else {
+        id = search[0].Id
+      }
+    }
+  }
+
+  const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stopsarea`);
+  let data = await response.json()
+  const linkedLines = data.find(stop => stop.stop_code == id).linked_lignes
+
+  console.log(linkedLines)
+
+  res.json(linkedLines.map(line => {
+    const lineData = lineMappings.find(x => x.numero == line.id)
+    return lineData
+  }));
+})

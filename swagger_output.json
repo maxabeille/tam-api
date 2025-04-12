@@ -21,38 +21,6 @@
     "https"
   ],
   "paths": {
-    "/stop/next/old/{station}": {
-      "get": {
-        "tags": [
-          "Stop"
-        ],
-        "summary": "Get next trams at a station. You can filter by line and destination.",
-        "description": "",
-        "parameters": [
-          {
-            "name": "station",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "line",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "destination",
-            "in": "query",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/stop/schedule/{station}/{line}/{direction}": {
       "get": {
         "tags": [
