@@ -119,5 +119,9 @@ stopRouter.get('/next/:station', async (req, res) => {
     data = data.filter(tram => tram.trip_headsign === req.query.destination.toUpperCase());
   }
 
+  for (const stop of data) {
+    stop.ligne = lineMappings.find(x => x.numero === stop.ligne)
+  }
+
   res.json(data);
 });
