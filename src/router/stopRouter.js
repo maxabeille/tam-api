@@ -120,7 +120,7 @@ stopRouter.get('/next/:station', async (req, res) => {
   }
 
   for (const stop of data) {
-    stop.ligne = lineMappings.find(x => x.numero === stop.ligne)
+    stop.details = lineMappings.find(x => x.numero === stop.ligne)
   }
 
   res.json(data);
