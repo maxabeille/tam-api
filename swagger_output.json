@@ -93,6 +93,28 @@
         }
       }
     },
+    "/stop/{station}/related": {
+      "get": {
+        "tags": [
+          "Stop"
+        ],
+        "summary": "Get related line to a station.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "station",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/line/geojson/{line}/{direction}": {
       "get": {
         "tags": [
