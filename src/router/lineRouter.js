@@ -43,7 +43,7 @@ lineRouter.get('/geojson/:line/:direction', async (req, res) => {
 lineRouter.get('/:line/:direction', async (req, res) => {
   // #swagger.tags = ['Line']
   // #swagger.summary = 'Get line informations like stops, bounds, etc.'
-  const lineId = lineMappings.find(x => +x.numero === +req.params.line)
+  const lineId = lineMappings.find(x => +x.id === +req.params.line)
   if (!lineId) {
     res.status(404).json({error: 'Line not found'})
     return
