@@ -91,7 +91,7 @@ stopRouter.get('/next/:station', async (req, res) => {
   }
 
   if (req.query.destination) {
-    data = data.filter(tram => tram.trip_headsign === req.query.destination.toUpperCase());
+    data = data.filter(tram => tram.direction_name.toLowerCase().includes(req.query.destination.toLowerCase()))
   }
 
   for (const stop of data) {
