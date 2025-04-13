@@ -125,7 +125,7 @@ stopRouter.get('/:station/related', async (req, res) => {
   const linkedLines = data.find(stop => stop.stop_code == id).linked_lignes
 
   res.json(linkedLines.map(line => {
-    const lineData = lineMappings.find(x => x.numero == line.id)
+    const lineData = lineMappings.find(x => x.id == line.id)
     return lineData
   }));
 })
