@@ -133,7 +133,11 @@ stopRouter.get('/:station/related', async (req, res) => {
 stopRouter.post('/located', async (req, res) => {
   // #swagger.tags = ['Stop']
   // #swagger.summary = 'Get stops located near a point.'
-  // #swagger.parameters['body'] = { in: 'body', required: true, schema: { $ref: '#/definitions/LocatedStops' } }
+  // #swagger.parameters['body'] = { in: 'body', required: true, description: 'Coordinates of the point', schema: { lat: 0, lon: 0 } }
+
+  if (!req.body) {
+    return res.status(400).json({error: 'Missing parameters'})
+  }
   const { lat, lon } = req.body
   if (!lat || !lon) {
     return res.status(400).json({error: 'Missing parameters'})
