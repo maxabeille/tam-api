@@ -91,7 +91,7 @@ stopRouter.get('/next/:station', async (req, res) => {
   }
 
   if (req.query.destination) {
-    data = data.filter(tram => tram.trip_headsign === req.query.destination.toUpperCase());
+    data = data.filter(tram => tram.direction_name.toLowerCase().includes(req.query.destination.toLowerCase()))
   }
 
   for (const stop of data) {
@@ -128,4 +128,37 @@ stopRouter.get('/:station/related', async (req, res) => {
     const lineData = lineMappings.find(x => x.id == line.id)
     return lineData
   }));
+})
+
+stopRouter.post('/located', async (req, res) => {
+  // #swagger.tags = ['Stop']
+  // #swagger.summary = 'Get stops located near a point.'
+  // #swagger.parameters['body'] = { in: 'body', required: true, description: 'Coordinates of the point', schema: { lat: 0, lon: 0 } }
+
+  if (!req.body) {
+    return res.status(400).json({error: 'Missing parameters'})
+  }
+  const { lat, lon } = req.body
+  if (!lat || !lon) {
+    return res.status(400).json({error: 'Missing parameters'})
+  }
+
+  const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stopsarea`);
+  let data = await response.json()
+  data = data.map(stop => {
+    const toRadians = (degrees) => degrees * (Math.PI / 180)
+    const earthRadius = 6371000; // Earh's radius in meters
+
+    const dLat = toRadians(stop.lat - lat)
+    const dLon = toRadians(stop.lng - lon)
+    const lat1 = toRadians(lat)
+    const lat2 = toRadians(stop.lat)
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    return { ...stop, distance: earthRadius * c }
+  }).sort((a, b) => a.distance - b.distance).slice(0, 10)
+
+  res.json(data);
 })

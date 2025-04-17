@@ -115,6 +115,44 @@
         }
       }
     },
+    "/stop/located": {
+      "post": {
+        "tags": [
+          "Stop"
+        ],
+        "summary": "Get stops located near a point.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Coordinates of the point",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number",
+                  "example": 0
+                },
+                "lon": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/line/geojson/{line}/{direction}": {
       "get": {
         "tags": [
