@@ -19,7 +19,7 @@ stopRouter.get('/schedule/:station/:line/:direction', async (req, res) => {
     return res.status(400).json({error: 'Missing parameters'})
   }
 
-  const lineId = lineMappings.find(x => +x.numero === +req.params.line)?.ligne_param.commercialId
+  const lineId = lineMappings.find(x => +x.id === +req.params.line)?.ligne_param.commercialId
   const lineData = await getLineData(req.params.line, req.params.direction)  
   const stopId = lineData.stops.find(stop => stop.nom.toLowerCase() === req.params.station.toLowerCase())?.id
   if (!stopId) {
