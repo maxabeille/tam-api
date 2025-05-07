@@ -81,8 +81,7 @@ stopRouter.get('/next/:station', async (req, res) => {
   if (String(id).charAt(0) !== 'S') {
     id = 'S' + id
   }
-
-  console.log(id)
+  
   const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stop/rt/${id}`, {
     headers: {
       'X-Api-Key': API_KEY,
