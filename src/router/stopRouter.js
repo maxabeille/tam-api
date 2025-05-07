@@ -1,12 +1,11 @@
 import express from "express";
-import { parse } from "csv-parse/sync";
 import { parse as htmlParse } from 'node-html-parser';
-import { parseTime } from "../utils/time.js";
 import { getLineData } from "./lineRouter.js";
-import { writeFileSync } from 'fs';
 import lineMappings from "../data/lineMappings.json" with { type: "json" };
 import {getResearch} from "../helper/searchHelper.js";
-import {deepToArray, flattenStops} from "../helper/stopHelper.js";
+import {flattenStops} from "../helper/stopHelper.js";
+
+const API_KEY = 'para'
 
 export const stopRouter = new express.Router();
 
@@ -83,7 +82,12 @@ stopRouter.get('/next/:station', async (req, res) => {
     id = 'S' + id
   }
 
-  const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stop/rt/${id}`);
+  console.log(id)
+  const response = await fetch(`https://cartographie.tam-voyages.com/gtfs/stop/rt/${id}`, {
+    headers: {
+      'X-Api-Key': API_KEY,
+    }
+  });
   let data = flattenStops(await response.json());
 
   if (req.query.line) {
